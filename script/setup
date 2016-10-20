@@ -52,7 +52,7 @@ symlink() {
 
 files=$(find -H $(pwd) -maxdepth 1 ! -path '*.git*' ! -name 'README.md' ! -path $(pwd))
 for file in $files ; do
-  target="../(basename $file)"
+  target="../$(basename $file)"
   symlink $file $target
 done
 
