@@ -10,7 +10,7 @@ echo "  \__,_|\___/ \__|    |_| |_|_|\___||___/"
 echo ""
 
 echo "==> Here we go..."
-cd ~
+cd `pwd`
 
 echo "  > Pulling latest dot-files..."
 git pull &> /dev/null
@@ -18,5 +18,42 @@ git pull &> /dev/null
 echo "  > Updating all git submodules..."
 git submodule init &> /dev/null
 git submodule update &> /dev/null
+
+###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+#
+# FUNCTION: symlink
+# Params: $1 = source file
+# Params: $2 = target symlink
+#
+###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+symlink() {
+  if [ -z "$1" -o ! -e "$1" ]; then
+    echo "symlink requires a valid source file or directory as an argument."
+    exit 1
+  fi
+
+  if [ -e  $2 ]; then
+    echo "$2 exists. Overwrite?"
+    echo -n "(y/n):"
+    read ans
+    case $ans in
+    Y|y)
+        rm $2 #just in case it's a directory - otherwise the symlink will be nested inside.
+        ln -fs $1 $2
+         ;;
+    N|n) ;;
+    *) echo "Invalid command"
+       exit ;;
+    esac
+  else
+    ln -fs $1 $2
+  fi
+}
+
+files=$(find -H $(pwd) -maxdepth 1 ! -path '*.git*' ! -name 'README.md' ! -path $(pwd))
+for file in $files ; do
+  target="../(basename $file)"
+  symlink $file $target
+done
 
 echo "==> Done with setup."
