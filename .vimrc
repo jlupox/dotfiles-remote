@@ -6,6 +6,7 @@ call pathogen#infect()
 call pathogen#helptags()
 
 syntax on                         " show syntax highlighting
+let mapleader = ","               " set leader key to comma
 filetype plugin indent on
 set autoindent                    " set auto indent
 set ts=2                          " set indent to 2 spaces
@@ -85,25 +86,45 @@ autocmd BufReadPost *
   \ exe "normal g`\"" |
   \ endif
 
-" My ColorSchemeToggle
-function! ColorSchemeToggle()
-  " if(s:colorscheme == 'solarized')
-  if(s:colorscheme != 'wombat')
-    colorscheme wombat256mod
-    " highlight ColorColumn ctermbg=233
-    let s:colorscheme = 'wombat256mod'
-  else
-    colorscheme wombat256
-    let s:colorscheme = 'wombat256'
-  endif
-endfunc
-nnoremap <Leader>c :call ColorSchemeToggle()<cr>
-
 set t_Co=256 " 256 colors"
 set cursorline                            " highlight current line
 set term=xterm-256color
 set colorcolumn=80
-colorscheme wombat256mod
+colorscheme wombat256
 highlight ColorColumn ctermbg=233
-" let s:colorscheme = 'wombat'
+let s:colorscheme = 'wombat256'
+
+" play nicely with TABs in Makefiles
+autocmd FileType make setlocal noexpandtab
+autocmd FileType make setlocal nolist
+
+" ------------------------------------------------------------------
+"  " To Copy/Paste using Clipboard
+"  " ------------------------------------------------------------------
+:set pastetoggle=<F2>
+
+" ------------------------------------------------------------------
+" For Airline
+" ------------------------------------------------------------------
+let g:airline_symbols = {}
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '^V' : 'V',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ '^S' : 'S',
+    \ }
+
 
