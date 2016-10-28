@@ -39,3 +39,71 @@ set bs=2                          " make backspace behave like normal again
 " set wildignore+=*/coverage/*
 runtime macros/matchit.vim        " use % to jump between start/end of methods
 
+" Reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
+
+" Easy split navigation
+nnoremap <S-h> <C-w>h
+nnoremap <S-j> <C-w>j
+nnoremap <S-k> <C-w>k
+nnoremap <S-l> <C-w>l
+" split almost tmux conf
+nnoremap <Leader><Bar> <C-w>v               " Split vertical - <Bar> is |
+nnoremap <Leader>- <C-w>s                   " Split horizontal
+
+" To open the navigator
+nnoremap <Leader>e :Ex<CR>
+nnoremap <Leader>q :bd<CR>
+
+" Awesome line number magic
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+    set nonumber
+  endif
+endfunc
+
+nnoremap <Leader>l :call NumberToggle()<cr>
+:au FocusLost * set number
+:au FocusGained * set relativenumber
+autocmd InsertEnter * set number
+autocmd InsertLeave * set relativenumber
+set relativenumber
+
+" Show trailing whitespace
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+au InsertLeave * match ExtraWhitespace /\s\+$/
+map <Leader>x :%s/\s\+$//<Return>
+
+" jump to last position in file when open
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \ exe "normal g`\"" |
+  \ endif
+
+" My ColorSchemeToggle
+function! ColorSchemeToggle()
+  " if(s:colorscheme == 'solarized')
+  if(s:colorscheme != 'wombat')
+    colorscheme wombat256mod
+    " highlight ColorColumn ctermbg=233
+    let s:colorscheme = 'wombat256mod'
+  else
+    colorscheme wombat256
+    let s:colorscheme = 'wombat256'
+  endif
+endfunc
+nnoremap <Leader>c :call ColorSchemeToggle()<cr>
+
+set t_Co=256 " 256 colors"
+set cursorline                            " highlight current line
+set term=xterm-256color
+set colorcolumn=80
+colorscheme wombat256mod
+highlight ColorColumn ctermbg=233
+" let s:colorscheme = 'wombat'
+
