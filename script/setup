@@ -18,6 +18,8 @@ git pull &> /dev/null
 echo "  > Updating all git submodules..."
 git submodule init &> /dev/null
 git submodule update &> /dev/null
+# wait $!
+sleep 1
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 #
@@ -35,10 +37,11 @@ symlink() {
   if [ -e  $2 ]; then
     echo "$2 exists. Overwrite?"
     echo -n "(y/n):"
+    echo "wating response"
     read ans
     case $ans in
     Y|y)
-        rm $2 #just in case it's a directory - otherwise the symlink will be nested inside.
+        rm -rf $2 #just in case it's a directory - otherwise the symlink will be nested inside.
         ln -fs $1 $2
          ;;
     N|n) ;;
