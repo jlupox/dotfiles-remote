@@ -1,0 +1,12 @@
+set visible-stats on
+set completion-ignore-case on
+set completion-prefix-display-length 2
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set completion-map-case on
+Control-j: menu-complete
+Control-k: menu-complete-backward
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+#"\C-p": history-search-backward
+#"\C-n": history-search-forward
